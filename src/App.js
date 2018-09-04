@@ -236,7 +236,7 @@ class Parent extends React.Component {
   }
 }
 
-function drag(cols, ev) {
+let drag = (cols) => (ev) => {
   ev.dataTransfer.setData("number", cols);
 }
 
@@ -248,7 +248,7 @@ class App extends Component {
   render() {
     let layout = [];
     for (let m of layoutModel) {
-      layout.push((<div onDragStart={drag.bind(this, m.cols)} draggable="true" class={"col-" + m.cols} style={{ border: '1px solid black' }}>
+      layout.push((<div onDragStart={drag(m.cols)} draggable="true" class={"col-" + m.cols} style={{ border: '1px solid black' }}>
         {m.title} {getComponent(m.cols)}
       </div>))
     }
