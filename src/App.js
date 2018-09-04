@@ -195,7 +195,7 @@ class MChild extends React.PureComponent {
 }
 let SuperMChild = logProps(MChild)
 let inner = ({ name }) => {
-  return (<div>name= {name}</div>);
+  return (<div>inner for child b= {name}</div>);
 };
 class Parent extends React.Component {
   constructor() {
@@ -203,14 +203,28 @@ class Parent extends React.Component {
     this.state = { a: { i: 0 }, b: { i: 0 }, lastKey: 'a' }
     this.ha = this.handle.bind(this);
   }
-  handle(key) {
-    this.state[key] = { i: this.state[key].i + 1 };
+  drop(e) {
+    var data = parseInt(e.dataTransfer.getData("number"));
+    this.handle('a', data)
+    this.handle('b', data)
+  }
+  dropHack = (e) => {
+    var data = parseInt(e.dataTransfer.getData("number"));
+    this.handle('a', data)
+    this.handle('b', data)
+  }
+  allowDrop(ev) {
+    ev.preventDefault();
+  }
+
+  handle(key, val) {
+    this.state[key] = { i: this.state[key].i + (val ? val : 1) };
     this.state = Object.assign({}, this.state, { lastKey: key })
     this.setState(this.state);
   }
   render() {
     return (
-      <div>
+      <div onDrop={this.dropHack} onDragOver={this.allowDrop}>
         {this.state.lastKey}
         <localeContext.Provider value={this.state.lastKey}>
           <MChild a={this.state.a} handler={this.ha} />
@@ -221,6 +235,11 @@ class Parent extends React.Component {
       </div>);
   }
 }
+
+function drag(cols, ev) {
+  ev.dataTransfer.setData("number", cols);
+}
+
 const layoutModel = [{ title: '6', cols: 6 }, { title: '6', cols: 6 }, { title: '4', cols: 4 }, { title: '8', cols: 8 }]
 function getComponent(type) {
   return <input value={type}></ input>
@@ -229,7 +248,7 @@ class App extends Component {
   render() {
     let layout = [];
     for (let m of layoutModel) {
-      layout.push((<div class={"col-" + m.cols} style={{ border: '1px solid black' }}>
+      layout.push((<div onDragStart={drag.bind(this, m.cols)} draggable="true" class={"col-" + m.cols} style={{ border: '1px solid black' }}>
         {m.title} {getComponent(m.cols)}
       </div>))
     }
