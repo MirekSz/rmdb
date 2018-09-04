@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
 import { observable, decorate, configure, action, runInAction } from "mobx"
 import { observer } from 'mobx-react';
+import PropTypes from 'prop-types';
 configure({ enforceActions: true });
 const states = [
   "Alabama",
@@ -174,7 +175,7 @@ function logProps(WrappedComponent) {
     }
   }
 }
-class MChild extends React.PureComponent {
+export class MChild extends React.PureComponent {
   send() {
     let key = Object.keys(this.props)[0]
     this.props.handler(key);
@@ -193,11 +194,14 @@ class MChild extends React.PureComponent {
       }</localeContext.Consumer>);
   }
 }
+MChild.propTypes = {
+  handler: PropTypes.func.isRequired
+};
 let SuperMChild = logProps(MChild)
 let inner = ({ name }) => {
   return (<div>inner for child b= {name}</div>);
 };
-class Parent extends React.Component {
+export class Parent extends React.Component {
   constructor() {
     super();
     this.state = { a: { i: 0 }, b: { i: 0 }, lastKey: 'a' }
