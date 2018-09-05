@@ -18,5 +18,8 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "ver": "react-scripts --version"
+  },
+  "devDependencies": {
+    "react-testing-library": "^5.0.1"
   }
 }
