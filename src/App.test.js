@@ -15,12 +15,13 @@ it('renders without crashing child', () => {
   ReactDOM.render(<MChild a={{}} handler={handler} />, div);
   ReactDOM.unmountComponentAtNode(div);
 });
-class Parent extends React.Component {
-  render() {
-    return (<MChild a={model} handler={handler} />)
-  }
-}
+// class Parent extends React.Component {
+//   render() {
+//     return (<MChild a={model} handler={handler} />)
+//   }
+// }
 it('renders MCHild and call handler', () => {
+  debugger
   let model = { i: 0 };
   let handler = () => { model.i = 1; };
   let { getByText, getByTestId, container, debug, rerender } = render(<MChild a={model} handler={handler} />);
@@ -28,8 +29,7 @@ it('renders MCHild and call handler', () => {
   expect(prettyDOM(container)).toMatch('"i":0');
   fireEvent.click(getByText('a'));
 
-  let z = render(<MChild a={model} handler={handler} />);
-  // console.log(prettyDOM(container))
-  expect(prettyDOM(z.container)).toMatch('"i":1');
-  debug();;
+  let afterUpdate = render(<MChild a={model} handler={handler} />);
+
+  expect(prettyDOM(afterUpdate.container)).toMatch('"i":1');
 });
