@@ -21,7 +21,6 @@ it('renders without crashing child', () => {
 //   }
 // }
 it('renders MCHild and call handler', () => {
-  debugger
   let model = { i: 0 };
   let handler = () => { model.i = 1; };
   let { getByText, getByTestId, container, debug, rerender } = render(<MChild a={model} handler={handler} />);

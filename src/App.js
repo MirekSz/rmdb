@@ -182,7 +182,7 @@ export class MChild extends React.PureComponent {
   }
   render() {
     let key = Object.keys(this.props)[0]
-    console.log(key);
+    // console.log(key);
     let data = JSON.stringify(this.props)
     let children = this.props.children ? this.props.children({ name: key }) : null
     return (
@@ -284,6 +284,20 @@ class App extends Component {
     );
   }
 }
+
+export class CompositeExample extends Component {
+  render() {
+    return (
+      <div className="App">
+        <Col md="6">
+          <TodoView todo={store} />
+          <InputView todo={store} />
+        </Col>
+      </div>
+    );
+  }
+}
+observer(CompositeExample);
 class Todo {
   id = Math.random();
   title = "";
@@ -299,7 +313,7 @@ class Todo {
         this.finished = !this.finished
         this.loading = false;
       });
-    }, 1000)
+    }, 100)
   }
 }
 
@@ -312,14 +326,14 @@ decorate(Todo, {
 
 })
 
-const store = new Todo();
+export const store = new Todo();
 
-const TodoView = observer(({ todo }) =>
+export const TodoView = observer(({ todo }) =>
   <li>
     {todo.loading ? (
       <p> Loading...</p>
     ) : (
-        <div>
+        <div className="content">
           <input
             type="checkbox"
             checked={todo.finished}
@@ -330,7 +344,7 @@ const TodoView = observer(({ todo }) =>
   </li>
 )
 
-class InputView extends React.Component {
+export class InputView extends React.Component {
 
   handleInputChanged = (event) => {
     const { todo } = this.props;
@@ -338,9 +352,9 @@ class InputView extends React.Component {
   }
 
   render() {
-    console.log('render')
+    // console.log('render')
     const { todo } = this.props;
-    console.log(todo)
+    // console.log(todo)
     return (
       <div>
         <Input label="title"
@@ -353,8 +367,8 @@ class InputView extends React.Component {
   }
 }
 observer(InputView);
-console.log(store.title)
-console.log(store.finished)
+// console.log(store.title)
+// console.log(store.finished)
 
 class FormsPageAdv extends React.Component {
 
